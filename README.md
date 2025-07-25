@@ -65,7 +65,7 @@ To get started, open the `Colab_IgGM.ipynb` notebook in Google Colab. The notebo
 
 The current workflow successfully implements a powerful pipeline for antibody analysis and design preparation using **IgGM**. The next frontier is to integrate the complete, end-to-end functional engineering capabilities demonstrated in the groundbreaking work by Yu Kong, Jiale Shi, Fandi Wu, and colleagues.
 
-Their paper introduces [**TFDesign-sdAb**]([https://polyformproject.org/licenses/noncommercial/1.0.0](https://www.biorxiv.org/content/10.1101/2025.05.09.653014v1)), a framework whose power comes from the synergy of two novel components working together: a specialized generator and an expert ranker. The key innovations that make this approach so successful are:
+Their paper introduces [**TFDesign-sdAb**](https://www.biorxiv.org/content/10.1101/2025.05.09.653014v1), a framework whose power comes from the synergy of two novel components working together: a specialized generator and an expert ranker. The key innovations that make this approach so successful are:
 
 * **A Re-architected IgGM for Framework Design:** The authors intelligently modified the IgGM model with a two-phase training strategy. This allows it to optimize not just the CDRs, but also the crucial **Framework Regions (FRs)**, which is essential for engineering new functions like Protein A binding while preserving the antibody's original antigen affinity.
 
