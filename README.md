@@ -39,7 +39,7 @@ PDB Input ➔ 1. Clean PDB (Remove non-protein) ➔ 2. Analyze Chains (Identify 
 To get started, open the [notebook](https://colab.research.google.com/drive/1-v8-anrA5rtlZzqT-g7HtVLzK1FZQzLv?usp=sharing) in Google Colab. The notebook is divided into numbered cells that should be run in order. Detailed instructions are provided in each cell's title and markdown text, also at the bottom of the notebook.
 
 ### **Part 1: Setup & Pre-processing**
-1.  **Install Dependencies:** Run the first few cells to install all necessary libraries and tools like `condacolab`, `pyrosettacolabsetup`, `ANARCI`, and `HMMER`. This may require restarting the Colab session once.
+1.  **Install Dependencies:** Run the first few cells to install all necessary libraries and tools like `condacolab`, `pyrosettacolabsetup`, `ANARCI`, and others. This may require restarting the Colab session once.
 2.  **Create Input Folder:** The notebook will automatically create the necessary directory structure, including `/content/IgGM/inputs`.
 
 ### **Part 2: PDB Pre-processing**
