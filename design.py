@@ -5,7 +5,6 @@ import os
 import sys
 import torch
 import tqdm
-import subprocess # <-- Added to call external scripts
 
 # Added crop_sequence_with_epitope import
 from IgGM.protein import cal_ppi, crop_sequence_with_epitope
@@ -32,7 +31,7 @@ def parse_args():
     parser.add_argument(
         '--relax', '-r',
         action='store_true',
-        help='Relax structures after design using an external relaxation script (e.g., run_relax.py)',
+        help='relax structures after design',
     )
     # Added --cal_epitope flag
     parser.add_argument(
@@ -131,50 +130,11 @@ def predict(args):
     )
     designer.to(device)
 
-    # Move specific layers to CPU to reduce memory usage
-    try:
-        designer.model.encoder.to("cpu")
-        print("Moved encoder to CPU.")
-    except AttributeError:
-        print("Warning: Unable to move some layers to CPU. Check layer names.")
-
     chunk_size = args.chunk_size
     print(f"# Inference samples: {len(batches)}")
 
     for task in tqdm.tqdm(batches):
-        # Step 1: Run the design process to generate the PDB.
-        # The 'relax' argument here is now set to False because we are handling it externally.
-        designer.infer_pdb(task["chains"], filename=task["output"], chunk_size=chunk_size, relax=False)
-
-        # Step 2: If --relax flag is used, call the external, standalone relaxation tool.
-        if args.relax:
-            print(f"\nRelaxation requested for {task['output']}...")
-            
-            # Create a dedicated output directory for relaxed files inside the main output folder
-            relax_output_dir = os.path.join(args.output, 'relaxed')
-            
-            # Define the command to call your standalone tool.
-            # This assumes 'run_relax.py' is an executable in the system's PATH.
-            command = [
-                sys.executable,  # Use the same python interpreter that is running design.py
-                'run_relax.py',
-                '--input_pdb', task['output'],
-                '--output_dir', relax_output_dir
-            ]
-            
-            print("Attempting to call external relaxation script...")
-            print(f"Command: {' '.join(command)}")
-
-            try:
-                # Execute the command to run your separate relaxation tool
-                subprocess.run(command, check=True)
-                print(f"Successfully relaxed structure. Output is in {relax_output_dir}")
-            except FileNotFoundError:
-                print("\n--- ERROR ---", file=sys.stderr)
-                print("The relaxation script 'run_relax.py' was not found.", file=sys.stderr)
-                print("Please ensure your standalone RosettaRelaxer tool is installed and 'run_relax.py' is accessible in your system's PATH.", file=sys.stderr)
-            except subprocess.CalledProcessError:
-                print(f"Error during external Rosetta relaxation for {task['output']}. See details from the script's output above.", file=sys.stderr)
+        designer.infer_pdb(task["chains"], filename=task["output"], chunk_size=chunk_size, relax=args.relax)
 
 
 def main():
